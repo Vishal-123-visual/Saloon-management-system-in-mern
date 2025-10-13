@@ -87,16 +87,16 @@ export const getServiceById = async (req, res) => {
 
 export const createService = async(req,res)=>{
     try {
-      console.log("Full request body:", req.body);
-      console.log("File details:", req.file);
-      console.log("Headers:", req.headers);
+      // console.log("Full request body:", req.body);
+      // console.log("File details:", req.file);
+      // console.log("Headers:", req.headers);
       
       // Extract and validate all fields
       const {description, category, serviceName, price, discountPrice, duration} = req.body;
       
-      console.log("Extracted fields:", {
-        description, category, serviceName, price, discountPrice, duration
-      });
+      // console.log("Extracted fields:", {
+      //   description, category, serviceName, price, discountPrice, duration
+      // });
         if(!description || !category || !serviceName || !price || !discountPrice || !duration){
             return res.status(400).json({
             message : "All Fields are required",
