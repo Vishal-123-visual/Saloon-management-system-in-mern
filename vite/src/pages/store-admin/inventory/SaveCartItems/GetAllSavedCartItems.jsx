@@ -131,7 +131,7 @@ export default function SavedCartsPage() {
                     ))}
                   </div>
                   {/* Total + Payment */}
-                  // Add inside the Total + Payment div
+                  {/* // Add inside the Total + Payment div */}
                   <div className="flex justify-between items-center pt-2 gap-2">
                     <span className="font-bold">
                       Total: ₹

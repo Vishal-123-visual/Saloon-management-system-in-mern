@@ -18,7 +18,7 @@ const CartPage = () => {
   const { cartItems, setCartItems, removeFromCart, clearCart, updateQuantity } =
     useCart();
   const { saveCart, getAllSavedCarts } = useSaveCart();
-  const { customer, setCustomer } = useCustomer();
+  const { customer, setCustomer ,setShowCustomer } = useCustomer();
   const navigate = useNavigate();
   const location = useLocation(); // ✅ access state from SavedCartsPage
 
@@ -80,6 +80,7 @@ const CartPage = () => {
     setTimeout(async() => {
       await clearCart()
       setCustomer(null)
+      setShowCustomer(false)
     }, 500);
   };
 

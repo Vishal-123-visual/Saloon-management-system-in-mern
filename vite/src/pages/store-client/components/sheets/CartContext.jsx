@@ -43,6 +43,7 @@ export const CartContextProvider = ({ children }) => {
 
   // ---------- customer State ----------
   const [customer, setCustomer] = useState(null);
+  const [showCustomer, setShowCustomer] = useState(false);
 
   // ---------- Save Cart State ----------
   const [savedCarts, setSavedCarts] = useState([]);
@@ -517,7 +518,7 @@ export const CartContextProvider = ({ children }) => {
                 saveCartLoading
               }}
               >
-                <CustomerContext.Provider value={{ customer,setCustomer}}>
+                <CustomerContext.Provider value={{ customer,setCustomer,showCustomer,setShowCustomer}}>
                    {children}
                 </CustomerContext.Provider>
             </SaveCartContext.Provider>

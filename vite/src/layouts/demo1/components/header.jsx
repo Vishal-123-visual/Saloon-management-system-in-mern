@@ -46,13 +46,12 @@ import { SidebarMenu } from './sidebar-menu';
 export function Header() {
   const { user } = useAuth();
   const { cartItems } = useCart();
-  const { setCustomer } = useCustomer();
+  const {customer, setCustomer,showCustomer, setShowCustomer } = useCustomer();
   const { searchQuery, setSearchQuery } = useSeacrh(); // ✅ from context
 
   const [searchCustomer, setSearchCustomer] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-
   /// quantity of items in cart
   const quantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 
@@ -331,14 +330,20 @@ export function Header() {
               </div>
               {/* Customer Search (desktop view example) */}
               <div className="relative w-72">
-                <input
-                  type="text"
-                  value={searchCustomer}
-                  onChange={(e) => setSearchCustomer(e.target.value)}
-                  placeholder="Search customer by name / number"
-                  className="w-full px-3 py-2 rounded-md outline-none bg-gray-100 text-black  font-medium"
-                />
-
+               
+                  {showCustomer && (
+                      <p className=' text-xs text-center text-red-600 '>{customer.name} {customer.phone} </p>
+                  )}
+                    <input
+                      type="text"
+                      value={searchCustomer}
+                      onChange={(e) => setSearchCustomer(e.target.value)}
+                      placeholder="Search customer by name / number"
+                      className="w-full px-3 py-1.5 rounded-md outline-none bg-gray-100 text-black  font-medium"
+                    />
+                  
+              
+                   
                 {/* Dropdown Results */}
                 {searchCustomer && (
                   <div className="absolute top-full mt-1 w-full bg-white shadow-lg rounded-md max-h-60 overflow-y-auto z-20">
@@ -356,8 +361,9 @@ export function Header() {
                           onClick={() => {
                             setCustomer(c);
                             toast.success('selected');
+                            setShowCustomer(true)
                             setResults([]);
-                            setSearchCustomer(c.phone);
+                            setSearchCustomer('');
                           }}
                         >
                           <p className="font-medium">{c.name}</p>
