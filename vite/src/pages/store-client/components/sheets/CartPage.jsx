@@ -58,6 +58,7 @@ const CartPage = () => {
         }, 1000);
         clearCart();
         setCustomer('');
+        setShowCustomer(false)
       } else {
         toast.error(res.message || 'Failed to save cart');
       }

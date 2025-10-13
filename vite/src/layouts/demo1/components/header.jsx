@@ -100,11 +100,11 @@ export function Header() {
   return (
     <header
       className={cn(
-        ' w-full fixed top-0 z-10 start-0   flex items-stretch shrink-0 border-b border-transparent  end-0 pe-[var(--removed-body-scroll-bar-size,0px)]',
+        ' w-full fixed top-0 z-40 start-0   flex items-stretch shrink-0 border-b border-transparent  end-0 pe-[var(--removed-body-scroll-bar-size,0px)]',
         headerSticky && 'border-b border-border',
       )}
     >
-      <div className=" w-full flex justify-between items-stretch lg:gap-4 gap-5   bg-cyan-400">
+      <div className="  w-full flex justify-between items-stretch lg:gap-4 gap-5   bg-cyan-400">
         {/* HeaderLogo for mobile */}
         <div className="  flex justify-between  lg:hidden items-center gap-2.5 pl-4 ">
           <Link to="/" className="shrink-0 ">
@@ -163,7 +163,7 @@ export function Header() {
         </div>
 
         {/* HeaderTopbar */}
-        <div className=" w-full flex items-center ">
+        <div className=" relative w-full flex items-center ">
           <div className=" w-full  xl:w-[77.5%]  pl-4 flex justify-start items-center gap-28  overflow-hidden  py-3 pr-2  ">
             <div className=" hidden lg:flex items-center gap-5 md:pl-4  ">
               <Link to="/" className="shrink-0 ">
@@ -202,7 +202,7 @@ export function Header() {
               </div>
             </div>
 
-            <div className=" w-full flex lg:justify-between  items-center sm:gap-5">
+            <div className="  w-full flex lg:justify-between  items-center sm:gap-5">
               <div className=" w-full sm:w-[300px] lg:w-full   bg-gray-100  rounded-lg px-1 sm:px-5 py-1 sm:py-2 lg:py-3 ">
                 <input
                   type="text"
@@ -214,18 +214,18 @@ export function Header() {
                   className=" w-full outline-none text-black font-semibold"
                 />
               </div>
-              <div className="relative xl:w-72 hidden sm:block xl:hidden ">
+              <div className="  xl:w-72 hidden sm:block xl:hidden ">
                 <input
                   type="text"
-                  value={searchCustomer}
+                  value={showCustomer ? `${customer.name} ${customer.phone}` : searchCustomer}
                   onChange={(e) => setSearchCustomer(e.target.value)}
                   placeholder="Search customer by name / number"
-                  className="w-full px-3 py-2 rounded-md outline-none bg-gray-200 text-black font-medium"
+                  className={`w-full px-3 py-2 rounded-md outline-none bg-gray-200 text-black font-medium`}
                 />
 
                 {/* Dropdown Results */}
                 {searchCustomer && (
-                  <div className="absolute top-full mt-1 w-full bg-white shadow-lg rounded-md max-h-60 overflow-y-auto z-20">
+                  <div className="absolute top-full z-40 mt-1 w-fit px-6 bg-white shadow-lg rounded-md max-h-60 overflow-y-auto ">
                     {loading && (
                       <p className="p-2 text-gray-500">Searching...</p>
                     )}
@@ -240,6 +240,7 @@ export function Header() {
                           onClick={() => {
                             setCustomer(c);
                             toast.success('selected');
+                            setShowCustomer(true)
                             setResults([]);
                             setSearchCustomer('');
                           }}
@@ -330,16 +331,12 @@ export function Header() {
               </div>
               {/* Customer Search (desktop view example) */}
               <div className="relative w-72">
-               
-                  {showCustomer && (
-                      <p className=' text-xs text-center text-red-600 '>{customer.name} {customer.phone} </p>
-                  )}
                     <input
                       type="text"
-                      value={searchCustomer}
+                      value={showCustomer ? `${customer.name}${customer.phone}` : searchCustomer}
                       onChange={(e) => setSearchCustomer(e.target.value)}
                       placeholder="Search customer by name / number"
-                      className="w-full px-3 py-1.5 rounded-md outline-none bg-gray-100 text-black  font-medium"
+                      className="w-full px-3 py-2 rounded-md outline-none bg-gray-100 text-black  font-medium"
                     />
                   
               
