@@ -1,0 +1,258 @@
+import { useState } from 'react';
+import { useAuth } from '@/auth/context/auth-context';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  AlertCircle,
+  Check,
+  Eye,
+  EyeOff,
+  LoaderCircleIcon,
+} from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from '@/components/ui/input';
+import { getSignupSchema } from '../forms/signup-schema';
+
+export function SignUpPage() {
+  const navigate = useNavigate();
+  const { register: registerUser } = useAuth(); // ✅ use context register()
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const form = useForm({
+    resolver: zodResolver(getSignupSchema()),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+      terms: false,
+    },
+  });
+
+  async function onSubmit(values) {
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      // ✅ call adapter via context
+      await registerUser({
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        password: values.password,
+      });
+
+      setSuccessMessage(
+        'Registration successful! Please check your email (if required) and then sign in.'
+      );
+
+      // redirect after delay
+      setTimeout(() => {
+        navigate('/auth/signin');
+      }, 2000);
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError(err.message || 'An unexpected error occurred during registration. Please try again.');
+      setSuccessMessage(null);
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="block w-full space-y-5"
+      >
+        <div className="text-center space-y-1 pb-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Sign Up</h1>
+          <p className="text-sm text-muted-foreground">
+            Create your account to get started
+          </p>
+        </div>
+
+        {error && (
+          <Alert
+            variant="destructive"
+            appearance="light"
+            onClose={() => setError(null)}
+          >
+            <AlertIcon>
+              <AlertCircle />
+            </AlertIcon>
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
+
+        {successMessage && (
+          <Alert appearance="light" onClose={() => setSuccessMessage(null)}>
+            <AlertIcon>
+              <Check />
+            </AlertIcon>
+            <AlertTitle>{successMessage}</AlertTitle>
+          </Alert>
+        )}
+
+        {/* Name */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Email */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Your email address"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Phone */}
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Your Phone Number"
+                  type="tel"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+    
+
+        {/* Password */}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <div className="relative">
+                <Input
+                  placeholder="Create a password"
+                  type={passwordVisible ? 'text' : 'password'}
+                  {...field}
+                />
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  mode="icon"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                >
+                  {passwordVisible ? (
+                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-muted-foreground" />
+                  )}
+                </Button>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Terms */}
+        <FormField
+          control={form.control}
+          name="terms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-0.5 space-y-0 rounded-md">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-sm text-muted-foreground">
+                  I agree to the{' '}
+                  <Link
+                    to="#"
+                    className="text-sm font-semibold text-foreground hover:text-primary"
+                  >
+                    Privacy Policy
+                  </Link>
+                </FormLabel>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+
+        {/* Submit */}
+        <Button type="submit" className="w-full" disabled={isProcessing}>
+          {isProcessing ? (
+            <span className="flex items-center gap-2">
+              <LoaderCircleIcon className="h-4 w-4 animate-spin" /> Creating
+              account...
+            </span>
+          ) : (
+            'Create Account'
+          )}
+        </Button>
+
+        <div className="text-center text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link
+            to="/auth/signin"
+            className="text-sm font-semibold text-foreground hover:text-primary"
+          >
+            Sign In
+          </Link>
+        </div>
+      </form>
+    </Form>
+  );
+}

@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+vite/node_modules/
+Backend/node_modules/
+
+# Build outputs
+vite/dist/
+Backend/dist/
+build/
+
+# Environment variables
+.env
+vite/.env
+Backend/.env
+
+# Logs
+*.log
+
+# System files
+.DS_Store
