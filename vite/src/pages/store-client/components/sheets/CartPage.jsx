@@ -80,7 +80,6 @@ const CartPage = () => {
     });
     setTimeout(async() => {
       await clearCart()
-      setCustomer(null)
       setShowCustomer(false)
     }, 500);
   };

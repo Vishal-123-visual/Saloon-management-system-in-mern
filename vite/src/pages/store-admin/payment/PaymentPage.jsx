@@ -65,6 +65,7 @@ export default function PaymentPage() {
     ? Math.max(total - discountAmount, 0)
     : total;
 
+    //console.log(customer)
   // Save Payment API
   const handleSavePayment = async () => {
     try {

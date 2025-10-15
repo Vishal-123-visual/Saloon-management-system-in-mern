@@ -368,7 +368,7 @@ export const CustomAdapter = {
       const response = await apiFetch(
         `${API_BASE_URL}/customer/search?search=${query}`,
       );
-      console.log(response)
+      //console.log(response)
       if (response.success) {
         //console.log(response)
         return response.customers;

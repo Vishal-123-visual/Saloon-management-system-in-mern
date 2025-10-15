@@ -217,7 +217,7 @@ export function Header() {
               <div className="  xl:w-72 hidden sm:block xl:hidden ">
                 <input
                   type="text"
-                  value={showCustomer ? `${customer.name} ${customer.phone}` : searchCustomer}
+                  value={showCustomer ? `${customer?.name} ${customer?.phone}` : searchCustomer}
                   onChange={(e) => setSearchCustomer(e.target.value)}
                   placeholder="Search customer by name / number"
                   className={`w-full px-3 py-2 rounded-md outline-none bg-gray-200 text-black font-medium`}
@@ -333,7 +333,7 @@ export function Header() {
               <div className="relative w-72">
                     <input
                       type="text"
-                      value={showCustomer ? `${customer.name}${customer.phone}` : searchCustomer}
+                      value={showCustomer ? `${customer.name}${customer.phone} ` : searchCustomer}
                       onChange={(e) => setSearchCustomer(e.target.value)}
                       placeholder="Search customer by name / number"
                       className="w-full px-3 py-2 rounded-md outline-none bg-gray-100 text-black  font-medium"
