@@ -12,6 +12,7 @@ export const CustomAdapter = {
     const response = await fetch(`${API_BASE_URL}/user/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials : 'include', // include cookies
       body: JSON.stringify({ phone, password }),
     });
 
@@ -21,23 +22,33 @@ export const CustomAdapter = {
     }
 
     const data = await response.json();
+    ///console.log(data)
     // backend should return: { token, refreshToken, user }
     //  console.log(data.token)
     //  console.log(data.refreshToken)
     // ✅ Save tokens & user to localStorage
-    localStorage.setItem('token', data.token);
-    if (data.refreshToken) {
-      localStorage.setItem('refreshToken', data.refreshToken);
-    }
-    if (data.user) {
-      localStorage.setItem('user', JSON.stringify(data.user));
-    }
+    // localStorage.setItem('token', data.token);
+    // if (data.refreshToken) {
+    //   localStorage.setItem('refreshToken', data.refreshToken);
+    // }
+    // if (data.user) {
+    //   localStorage.setItem('user', JSON.stringify(data.user));
+    // }
 
+    // return {
+    //   access_token: data.token,
+    //   refresh_token: data.refreshToken,
+    //   user: data.user || null,
+    // };
+    if(data.user){
+      sessionStorage.setItem('user',JSON.stringify(data.user))
+      toast.success(data.message)
+    }
     return {
-      access_token: data.token,
-      refresh_token: data.refreshToken,
-      user: data.user || null,
-    };
+      access_token:data.user._id,
+      refresh_token : data.user._id,
+     user : data.user || null
+    }
   },
 
   /**
@@ -48,6 +59,7 @@ export const CustomAdapter = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData), // {phone, password, name, email?}
+      credentials : 'include'
     });
 
     if (!response.ok) {
@@ -59,19 +71,23 @@ export const CustomAdapter = {
     // backend should return { token, refreshToken, user? }
 
     // ✅ Save tokens
-    localStorage.setItem('token', data.token);
-    if (data.refreshToken) {
-      localStorage.setItem('refreshToken', data.refreshToken);
-    }
-    if (data.user) {
-      localStorage.setItem('user', JSON.stringify(data.user));
-    }
+    // localStorage.setItem('token', data.token);
+    // if (data.refreshToken) {
+    //   localStorage.setItem('refreshToken', data.refreshToken);
+    // }
+    // if (data.user) {
+    //   localStorage.setItem('user', JSON.stringify(data.user));
+    // }
 
-    return {
-      access_token: data.token,
-      refresh_token: data.refreshToken || null,
-      user: data.user || null,
-    };
+    // return {
+    //   access_token: data.token,
+    //   refresh_token: data.refreshToken || null,
+    //   user: data.user || null,
+    // };
+    if(data.user){
+      sessionStorage.setItem('user',JSON.stringify(data.user))
+    }
+    return data.user || null;
   },
 
 
@@ -82,8 +98,9 @@ export const CustomAdapter = {
           method : "PUT",
           headers : {
             'Content-Type' : 'application/json',
-            Authorization : `Bearer ${localStorage.getItem('token')}`
+            // Authorization : `Bearer ${localStorage.getItem('token')}`
           },
+          credentials : 'include',
           body :JSON.stringify(data)
         })
         const resData = await response.json()
@@ -106,9 +123,10 @@ export const CustomAdapter = {
        try {
         const response = await fetch(`${API_BASE_URL}/user/${id}`,{
           method : "DELETE",
-          headers : {
-            Authorization : `Bearer ${localStorage.getItem('token')}`
-          },
+          // headers : {
+          //   Authorization : `Bearer ${localStorage.getItem('token')}`
+          // },
+          credentials : 'include'
         })
         const resData = await response.json()
         if(resData.success){
@@ -132,9 +150,10 @@ export const CustomAdapter = {
       const response = await fetch(`${API_BASE_URL}/user/${id}`,
         {
           method : "GET",
-          headers :{
-            Authorization : `Bearer ${localStorage.getItem('token')}`
-          }
+          // headers :{
+          //   Authorization : `Bearer ${localStorage.getItem('token')}`
+          // }
+          credentials : 'include'
         }
       )
       const resData = await response.json()
@@ -157,9 +176,10 @@ export const CustomAdapter = {
       const response = await fetch(`${API_BASE_URL}/user/all`,
         {
           method : "GET",
-          headers :{
-            Authorization : `Bearer ${localStorage.getItem('token')}`
-          }
+          credentials : 'include'
+          // headers :{
+          //   Authorization : `Bearer ${localStorage.getItem('token')}`
+          // }
         }
       )
       const resData = await response.json()
@@ -180,13 +200,12 @@ export const CustomAdapter = {
   /**
    * Get current logged-in user (via token)
    */
-  async getCurrentUser(token) {
-    if (!token) return null;
-
+  async getCurrentUser() {
     const response = await fetch(`${API_BASE_URL}/user/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
+      credentials : 'include',
     });
 
     if (!response.ok) return null;
@@ -201,8 +220,9 @@ export const CustomAdapter = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        // Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
+      credentials : 'include',
       body: JSON.stringify(customerData),
     });
     const data = await response.json().catch(() => {});
@@ -225,8 +245,9 @@ export const CustomAdapter = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        // Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
+      credentials : 'include',
       body: JSON.stringify(customerData),
     });
     const data = await response.json().catch(() => {});
@@ -247,9 +268,10 @@ export const CustomAdapter = {
   async deleteCustomer(id) {
     const response = await fetch(`${API_BASE_URL}/customer/${id}`, {
       method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${localStorage.getItem('token')}`,
+      // },
+      credentials : 'include',
     });
     const data = await response.json().catch(() => {});
     console.log(data)
@@ -266,9 +288,10 @@ export const CustomAdapter = {
   async customerDetailsById(id) {
     const response = await fetch(`${API_BASE_URL}/customer/${id}`, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${localStorage.getItem('token')}`,
+      // },
+      credentials : 'include',
     });
     const data = await response.json().catch(() => {});
 
@@ -326,9 +349,10 @@ export const CustomAdapter = {
     try {
       const response = await fetch(`${API_BASE_URL}/customer`, {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${localStorage.getItem('token')}`,
+        // },
+        credentials : 'include'
       });
 
       if (!response.ok) {
@@ -351,9 +375,10 @@ export const CustomAdapter = {
     try {
       const response = await fetch(`${API_BASE_URL}/customer/customer-stats`,{
         method : 'GET',
-        headers :{
-          Authorization : `Bearer ${localStorage.getItem('token')}`
-        }
+        // headers :{
+        //   Authorization : `Bearer ${localStorage.getItem('token')}`
+        // }
+        credentials : 'include'
       })
       const resData = await response.json()
       return resData
@@ -365,9 +390,9 @@ export const CustomAdapter = {
   // get customer by name or phone ( for admin and staff )
   async searchCustomers(query) {
     try {
-      const response = await apiFetch(
-        `${API_BASE_URL}/customer/search?search=${query}`,
-      );
+      const response = await apiFetch(`${API_BASE_URL}/customer/search?search=${query}`,{
+          credentials : 'include'
+        });
       //console.log(response)
       if (response.success) {
         //console.log(response)
@@ -384,21 +409,23 @@ export const CustomAdapter = {
   /**
    * Logout
    */
-  async logout(token) {
+  async logout() {
     try {
       await fetch(`${API_BASE_URL}/user/logout`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        credentials : 'include'
       });
     } catch (e) {
       console.warn('Logout request failed (ignored):', e);
     } finally {
-      // ✅ Clear localStorage always
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      // // ✅ Clear localStorage always
+      // localStorage.removeItem('token');
+      // localStorage.removeItem('refreshToken');
+      // localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
     }
   },
 };

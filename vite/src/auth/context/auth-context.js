@@ -5,6 +5,7 @@ export const AuthContext = createContext({
   loading: false,
   setLoading: () => {},
   saveAuth: () => {},
+  user : null,
   setUser: () => {},
   login: async () => {},
   allUser: async () => {},

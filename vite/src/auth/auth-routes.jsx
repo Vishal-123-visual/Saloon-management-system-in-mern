@@ -100,8 +100,8 @@ export const authRoutes = [
       },
     ],
   },
-  {
-    path: 'callback',
-    element: <CallbackPage />,
-  },
+  // {
+  //   path: 'callback',
+  //   element: <CallbackPage />,
+  // },
 ];

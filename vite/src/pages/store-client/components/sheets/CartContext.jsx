@@ -132,6 +132,7 @@ export const CartContextProvider = ({ children }) => {
     try {
       await apiFetch(`${API_BASE_URL}/cart/many`, {
         method: "DELETE",
+    
       });
       setCartItems([]);
     } catch (error) {
@@ -168,7 +169,8 @@ export const CartContextProvider = ({ children }) => {
   const getAllSavedCarts = async () => {
     try {
       setSaveCartLoading(true);
-      const resData = await apiFetch(`${API_BASE_URL}/save-cart`);
+      const resData = await apiFetch(`${API_BASE_URL}/save-cart`,{
+      });
       if (resData.success) {
         setSavedCarts(resData.data || []);
       } else {
@@ -184,7 +186,8 @@ export const CartContextProvider = ({ children }) => {
   const getSavedCartById = async(id)=>{
     try {
       setSaveCartLoading(true)
-      const response = await apiFetch(`${API_BASE_URL}/save-cart/${id}`)
+      const response = await apiFetch(`${API_BASE_URL}/save-cart/${id}`,{
+      })
       if(response.success){
        return response.data
       }
@@ -236,6 +239,7 @@ export const CartContextProvider = ({ children }) => {
     try {
       const resData = await apiFetch(`${API_BASE_URL}/save-cart`, {
         method: "DELETE",
+     
       });
       if (resData.success) {
         setSavedCarts([]);
@@ -344,7 +348,8 @@ export const CartContextProvider = ({ children }) => {
   const fetchProducts = async () => {
     try {
       setProductLoading(true);
-      const resData = await apiFetch(`${API_BASE_URL}/service`);
+      const resData = await apiFetch(`${API_BASE_URL}/service`,{
+      });
       if (resData.success) setProducts(resData.data || []);
     } catch (error) {
       console.error("Error fetching products:", error.message);

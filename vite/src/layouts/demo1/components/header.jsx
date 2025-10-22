@@ -32,7 +32,6 @@ import {
 } from '@/components/ui/sheet';
 import { Container } from '@/components/common/container';
 import { CustomAdapter } from '../../../auth/adapters/custome-adapter';
-import { useAuth } from '../../../auth/context/auth-context';
 import {
   useCart,
   useCustomer,
@@ -44,7 +43,6 @@ import { MegaMenuMobile } from './mega-menu-mobile';
 import { SidebarMenu } from './sidebar-menu';
 
 export function Header() {
-  const { user } = useAuth();
   const { cartItems } = useCart();
   const {customer, setCustomer,showCustomer, setShowCustomer } = useCustomer();
   const { searchQuery, setSearchQuery } = useSeacrh(); // ✅ from context
@@ -52,6 +50,7 @@ export function Header() {
   const [searchCustomer, setSearchCustomer] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = JSON.parse(sessionStorage.getItem('user'))
   /// quantity of items in cart
   const quantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 

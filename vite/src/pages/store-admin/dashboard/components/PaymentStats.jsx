@@ -22,9 +22,7 @@ export function PaymentStats() {
   const fetchData = async (range) => {
     const res = await fetch(`${API_BASE_URL}/payment/stats?timeRange=${range}`,{
         method : 'GET',
-        headers :{
-            Authorization :`Bearer ${localStorage.getItem('token')}`
-        }
+       credentials : 'include'
     });
     const data = await res.json();
 

@@ -3,12 +3,14 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import connectedToDB from './config/db.js'
 import { addToCart, categoryRouter, customerRouter, paymentRouter, saveCartRouter, serviceRouter, userRouter } from './routes/Route.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 const Port = process.env.PORT || 5000
 
 const app = express()
 
+app.use(cookieParser())
 // ✅ Enable CORS
 app.use(cors({
   origin : process.env.FRONTEND_URL || "*",

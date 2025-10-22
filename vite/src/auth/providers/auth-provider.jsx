@@ -8,7 +8,7 @@ import { useCart, useCategory, useProduct } from "../../pages/store-client/compo
 
 export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState(authHelper.getAuth()); // {access_token}
+  // const [auth, setAuth] = useState(authHelper.getAuth()); // {access_token}
   const [currentUser, setCurrentUser] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const {fetchCartItems} = useCart()
@@ -20,36 +20,64 @@ export function AuthProvider({ children }) {
     setIsAdmin(currentUser?.is_admin === true);
   }, [currentUser]);
 
-  const saveAuth = (authData) => {
-    setAuth(authData);
-    if (authData?.access_token) {
-      authHelper.setAuth(authData);
-    } else {
-      authHelper.removeAuth();
-    }
-  };
-
-  const verify = async () => {
-    if (auth?.access_token) {
-      try {
-        const user = await getUser();
-        setCurrentUser(user || undefined);
-      } catch {
-        saveAuth(undefined);
-        setCurrentUser(undefined);
+  const fetchCurrentUser = async ()=>{
+    try {
+      const user  = await CustomAdapter.getCurrentUser()
+      if(user){
+        setCurrentUser(user)
+        sessionStorage.setItem('user',JSON.stringify(user))
       }
+      else{
+        setCurrentUser(undefined)
+        sessionStorage.removeItem('user')
+      }
+    } catch (error) {
+      console.log('Error fetching current user',error)
+      sessionStorage.removeItem('user')
+    }finally{
+      setLoading(false)
     }
-  };
+  }
+
+  useEffect(()=>{
+    const savedUser = sessionStorage.getItem('user')
+    if(savedUser){
+      setCurrentUser(JSON.parse(savedUser))
+      setLoading(false)
+    }
+    else{
+      fetchCurrentUser()
+    }
+  },[])
+  // const saveAuth = (authData) => {
+  //   setAuth(authData);
+  //   if (authData?.access_token) {
+  //     authHelper.setAuth(authData);
+  //   } else {
+  //     authHelper.removeAuth();
+  //   }
+  // };
+
+  // const verify = async () => {
+  //   if (auth?.access_token) {
+  //     try {
+  //       const user = await getUser();
+  //       setCurrentUser(user || undefined);
+  //     } catch {
+  //       saveAuth(undefined);
+  //       setCurrentUser(undefined);
+  //     }
+  //   }
+  // };
 
   
  const login = async (phone, password) => {
   try {
     const authData = await CustomAdapter.login(phone, password);
-    saveAuth(authData);
-
+    //saveAuth(authData);
     // If login already returned user, use that
-    const user = authData.user || (await getUser());
-    setCurrentUser(user || undefined);
+    const user = authData.user || (await CustomAdapter.getCurrentUser());
+    setCurrentUser(user)
     await fetchCartItems()
     await fetchCategories()
     await fetchProducts()
@@ -59,7 +87,7 @@ export function AuthProvider({ children }) {
     //console.log(user)
     return user;
   } catch (error) {
-    saveAuth(undefined);
+   // saveAuth(undefined);
     throw error;
   }
 };
@@ -68,12 +96,12 @@ export function AuthProvider({ children }) {
   const register = async (userData) => {
     try {
       const authData = await CustomAdapter.register(userData);
-      saveAuth(authData);
-      const user = await getUser();
-      setCurrentUser(user || undefined);
+      //saveAuth(authData);
+      const user = await CustomAdapter.getCurrentUser();
+      setCurrentUser(user)
       return user
     } catch (error) {
-      saveAuth(undefined);
+      //saveAuth(undefined);
       throw error;
     }
   };
@@ -81,8 +109,9 @@ export function AuthProvider({ children }) {
   const getUser = async () => {
     //console.log(auth.access_token)
     if (!auth?.access_token) return null;
-     const user=  await CustomAdapter.getCurrentUser(auth.access_token);
+     const user=  await CustomAdapter.getCurrentUser();
     // console.log( 'usre',user)
+    //console.log(user)
      return user
   };
 
@@ -103,22 +132,22 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    if (auth?.access_token) await CustomAdapter.logout(auth.access_token);
-    saveAuth(undefined);
+    if (sessionStorage.getItem('user')) await CustomAdapter.logout();
+
     setCurrentUser(undefined);
   };
 
-  useEffect(() => {
-    verify().finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   verify().finally(() => setLoading(false));
+  // }, []);
  //console.log(currentUser)
   return (
     <AuthContext.Provider
       value={{
         loading,
         setLoading,
-        auth,
-        saveAuth,
+        // auth,
+        //saveAuth,
         user: currentUser,
         setUser: setCurrentUser,
         login,
@@ -129,7 +158,7 @@ export function AuthProvider({ children }) {
         getUser,
         updateProfile,
         logout,
-        verify,
+        //verify,
         isAdmin,
       }}
     >

@@ -15,7 +15,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { useLanguage } from '@/providers/i18n-provider';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +38,7 @@ export function UserDropdownMenu({ trigger }) {
   const { logout, user } = useAuth();
   const { currenLanguage, changeLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   // Use display data from currentUser
   const displayName =
@@ -257,7 +258,10 @@ export function UserDropdownMenu({ trigger }) {
             variant="outline"
             size="sm"
             className="w-full"
-            onClick={logout}
+            onClick={()=>{
+              logout();
+              navigate('/auth/signin')
+            }}
           >
             Logout
           </Button>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/auth/context/auth-context';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, Check, Eye, EyeOff, LoaderCircleIcon } from 'lucide-react';
+import { AlertCircle, Check, Eye, EyeOff, LoaderCircleIcon, TableColumnsSplit } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -66,15 +66,17 @@ async function onSubmit(values) {
 
     // ✅ login returns the user object now
      const loguser = await login(values.phone, values.password);
-    
-   
+    console.log('user',loguser)
+      console.log('use',user)
     setSuccessMessage(`Login successfull`);
 
     // Redirect
     
-
-      const nextPath = searchParams.get('next') || '/';
-      navigate(nextPath);
+          
+      // const nextPath = searchParams.get('next') ;
+      // console.log(nextPath)
+      // navigate(nextPath,{replace : true});
+      navigate('/');
 
    
   } catch (err) {

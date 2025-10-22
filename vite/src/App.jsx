@@ -1,4 +1,4 @@
-import { AppRouting } from '@/routing/app-routing';
+//import { AppRouting } from '@/routing/app-routing';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { SettingsProvider } from './providers/settings-provider';
 import { ThemeProvider } from './providers/theme-provider';
 import { TooltipsProvider } from './providers/tooltips-provider';
 import { AuthProvider } from './auth/providers/auth-provider';
+import { AppRoutingSetup } from './routing/app-routing-setup';
 
 const { BASE_URL } = import.meta.env;
 
@@ -32,7 +33,7 @@ export function App() {
                       <BrowserRouter basename={BASE_URL}>
                         <Toaster position="top-center" />
                         <ModulesProvider>
-                          <AppRouting />
+                          <AppRoutingSetup />
                         </ModulesProvider>
                       </BrowserRouter>
                     </LoadingBarContainer>

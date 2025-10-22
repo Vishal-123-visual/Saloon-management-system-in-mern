@@ -34,7 +34,7 @@ export function AppRoutingSetup() {
     <>
       <Header />
       <Routes>
-        <Route element={<RequireAuth />}>
+       
           <Route element={<Demo1Layout />}>
             <Route path="/" element={<StoreClientPage />} />
             <Route path="/dark-sidebar" element={<Demo1DarkSidebarPage />} />
@@ -189,7 +189,7 @@ export function AppRoutingSetup() {
               element={<AccountGetStartedPage />}
             />
           </Route>
-        </Route>
+       
         <Route path="error/*" element={<ErrorRouting />} />
         <Route path="auth/*" element={<AuthRouting />} />
         <Route path="*" element={<Navigate to="/error/404" />} />

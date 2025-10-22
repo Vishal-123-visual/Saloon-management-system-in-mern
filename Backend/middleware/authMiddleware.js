@@ -5,9 +5,8 @@ import User from '../models/userModel.js';
  * Protect routes using access token
  */
 export const protect = async (req, res, next) => {
-  const auth = req.headers.authorization || '';
-  const token = auth.startsWith('Bearer') ? auth.slice(7) : null;
-  //console.log('token',token)
+  const token = req.cookies?.token;
+ // console.log('token',token)
 
   if (!token) {
     return res.status(401).json({
