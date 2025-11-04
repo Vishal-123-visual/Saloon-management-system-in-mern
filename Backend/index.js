@@ -13,7 +13,7 @@ const app = express()
 app.use(cookieParser())
 // ✅ Enable CORS
 app.use(cors({
-  origin :process.env.CORS_ORIGINS ||  process.env.FRONTEND_URL || "*",
+  origin :process.env.CORS_ORIGINS ||  process.env.FRONTEND_URL ,
   methods : ['GET','POST','PUT','DELETE'],
   credentials : true
 }))
