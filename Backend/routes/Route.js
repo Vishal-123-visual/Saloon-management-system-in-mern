@@ -47,7 +47,7 @@ customerRouter.delete('/:id',protect,isAdminOrStaff,deleteCustomer)
 
 // category route
 categoryRouter.post('/',protect,isAdminOrStaff,uploadImage.single('image'),createCategory)
-categoryRouter.get('/',protect,listCategories)
+categoryRouter.get('/',listCategories)
 categoryRouter.get('/:id',protect,isAdminOrStaff,getCategoryById)
 categoryRouter.put('/:id',protect,isAdminOrStaff,uploadImage.single('image'),updateCategory)
 categoryRouter.delete('/:id',protect,isAdminOrStaff,deleteCategory)

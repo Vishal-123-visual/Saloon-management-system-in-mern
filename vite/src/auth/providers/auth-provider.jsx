@@ -1,5 +1,5 @@
 // src/auth/providers/auth-provider.jsx
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import * as authHelper from "@/auth/lib/helpers";
 import { AuthContext } from "../context/auth-context";
@@ -16,16 +16,19 @@ export function AuthProvider({ children }) {
     const {fetchProducts } = useProduct();
 
 
-  useEffect(() => {
-    setIsAdmin(currentUser?.is_admin === true);
-  }, [currentUser]);
+  // useEffect(() => {
+  //   setIsAdmin(currentUser?.is_admin === true);
+  // }, [currentUser]);
 
   const fetchCurrentUser = async ()=>{
     try {
       const user  = await CustomAdapter.getCurrentUser()
+      console.log('user',user)
       if(user){
         setCurrentUser(user)
         sessionStorage.setItem('user',JSON.stringify(user))
+        if(user.role === 'admin') setIsAdmin(true)
+        else setIsAdmin(false)
       }
       else{
         setCurrentUser(undefined)
@@ -81,10 +84,6 @@ export function AuthProvider({ children }) {
     await fetchCartItems()
     await fetchCategories()
     await fetchProducts()
-    if(user.role === 'admin'){
-      setIsAdmin(true)
-    }
-    //console.log(user)
     return user;
   } catch (error) {
    // saveAuth(undefined);
