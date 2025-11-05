@@ -197,7 +197,8 @@ export function Header() {
                 )}
               </div>
               <div className=" text-neutral-50 font-medium border-1 px-10 py-1 rounded-md border-neutral-500">
-                <p>{user ? user?.role : 'User'}</p>
+                <Link to={'/'}>{user ? user?.role : 'User'}</Link>
+
               </div>
             </div>
 

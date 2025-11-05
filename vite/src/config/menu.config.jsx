@@ -255,32 +255,32 @@ export const MENU_SIDEBAR = [
     title: 'Authentication',
     icon: ShieldUser,
     children: [
-      // {
-      //   title: 'Classic',
-      //   children: [
-      //     { title: 'Sign In', path: '/auth/classic/signin' },
-      //     { title: 'Sign Up', path: '/auth/classic/signup' },
-      //     { title: '2FA', path: '/auth/classic/2fa' },
-      //     { title: 'Check Email', path: '/auth/classic/check-email' },
-      //     {
-      //       title: 'Reset Password',
-      //       children: [
-      //         {
-      //           title: 'Enter Email',
-      //           path: '/auth/classic/request-reset',
-      //         },
-      //         {
-      //           title: 'Check Email',
-      //           path: '/auth/classic/reset-password/check-email',
-      //         },
-      //         {
-      //           title: 'Password Changed',
-      //           path: '/auth/classic/reset-password/changed',
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
+      {
+        title: 'Classic',
+        children: [
+          { title: 'Sign In', path: '/auth/classic/signin' },
+          { title: 'Sign Up', path: '/auth/classic/signup' },
+          { title: '2FA', path: '/auth/classic/2fa' },
+          { title: 'Check Email', path: '/auth/classic/check-email' },
+          {
+            title: 'Reset Password',
+            children: [
+              {
+                title: 'Enter Email',
+                path: '/auth/classic/request-reset',
+              },
+              {
+                title: 'Check Email',
+                path: '/auth/classic/reset-password/check-email',
+              },
+              {
+                title: 'Password Changed',
+                path: '/auth/classic/reset-password/changed',
+              },
+            ],
+          },
+        ],
+      },
       {
         title: 'Branded',
         children: [

@@ -92,14 +92,16 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || true,
-      sameSite: "Strict",
+      secure: false,
+      sameSite: "lax",
+      path : '/',
       maxAge : 24 * 60 * 60 * 1000 // 
     });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || true,
-      sameSite: "Strict",
+      secure: false,
+      sameSite: "lax",
+      path : '/',
       maxAge : 7 * 24 * 60 * 60 * 1000
     });
 

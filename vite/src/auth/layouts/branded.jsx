@@ -15,7 +15,7 @@ export function BrandedLayout() {
           }
         `}
       </style>
-      <div className="grid lg:grid-cols-1 grow">
+      <div className="grid lg:grid-cols-2 grow">
         <div className="flex justify-center items-center p-8 lg:p-10 order-2 lg:order-1">
           <Card className="w-full max-w-[400px]">
             <CardContent className="p-6">
@@ -24,11 +24,11 @@ export function BrandedLayout() {
           </Card>
         </div>
 
-        {/* <div className="lg:rounded-xl lg:border lg:border-border lg:m-5 order-1 lg:order-2 bg-top xxl:bg-center xl:bg-cover bg-no-repeat branded-bg">
+        <div className="lg:rounded-xl lg:border lg:border-border lg:m-5 order-1 lg:order-2 bg-top xxl:bg-center xl:bg-cover bg-no-repeat branded-bg">
           <div className="flex flex-col p-8 lg:p-16 gap-4">
             <Link to="/">
               <img
-                src={toAbsoluteUrl('/media/app/mini-logo.svg')}
+                src={'/media/app/mini-logo.svg'}
                 className="h-[28px] max-w-none"
                 alt=""
               />
@@ -49,7 +49,7 @@ export function BrandedLayout() {
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );
